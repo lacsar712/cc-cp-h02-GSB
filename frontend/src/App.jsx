@@ -107,6 +107,8 @@ export function App() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
+        // 写口拒绝（值班员只读）或校验失败：只显示错误，
+        // 不刷新总表、不追加任何占位行，表内读数保持原样。
         setError(data.detail || "提交失败");
         return;
       }
@@ -176,7 +178,7 @@ export function App() {
         </div>
       </div>
 
-      {true /* h02-trap-form */ && (
+      {isWriter /* 仅记录员渲染报温框；值班员首页无写口 */ && (
         <div class="card">
           <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>提交读数</h2>
           <form onSubmit={onSubmit}>
