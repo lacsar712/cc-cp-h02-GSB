@@ -107,6 +107,7 @@ export function App() {
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
+        // 放行失败（如值班员只读）：仅提示错误，不刷新总表、不插入任何占位/空行。
         setError(data.detail || "提交失败");
         return;
       }
@@ -176,7 +177,7 @@ export function App() {
         </div>
       </div>
 
-      {true /* h02-trap-form */ && (
+      {isWriter && (
         <div class="card">
           <h2 style={{ marginTop: 0, fontSize: "1.1rem" }}>提交读数</h2>
           <form onSubmit={onSubmit}>
